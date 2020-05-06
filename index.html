@@ -1,59 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api - JSON</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <title>Document</title>
-</head>
-<body onload="carregarTabelaCliente()">
+    
    
+</head>
 
-    <table  class="table">
-        <thead >
+
+
+<nav class="navbar navbar-light bg-dark">
+  <h3>LOJA JSON MOKABLE </h3>
+</nav>
+<body onload="carregaTabela()">  
+
+  <div id="titulo">
+    <h6>Dados dos clientes JSON</h6>
+    <p>Todos os dados exibidos nesta interface estão sendo requisitados de uma API teste criada no Mokable.
+   
+  </p>
+  <a target="_blank" href="https://demo6279324.mockable.io/teste">
+    <button class="btn btn-success btn-sm" id="btn">JSON</button>
+  </a>
+  </div>
+    
+    <div id="tabelaGrup" class="table-responsive">
+   
+    <table id="tabela"class="table table-striped table-bordered container">
+        <thead class="thead-dark">
           <tr>
-            <th>Nome</th>
-            <th>Idade</th>
-            <th>Documento</th>
-            <th>Endereço</th>
+            <th scope="col">ID</th>
+            <th scope="col" id="nome">Nome</th>
+            <th scope="col">Idade</th>
+            <th scope="col">Documento</th>
           </tr>
         </thead>
         <tbody id="cliente">
-                
+         
         </tbody>
       </table>
-</body>
+      <button class="btn btn-success btn-sm" id="btn" onclick="getJson()">teste</button> <!-- botão de teste de API-->
+ </div>
+ <script>
+
+    function getJson(){
+    var  httpResq = new XMLHttpRequest(); // cria objeto para pegar a url da API
+    var url = "https://demo6279324.mockable.io/teste"; // caminho da API
+    httpResq.open("GET", url, false); // abre a conexão com API (pede metodo, o caminho ou a varivel com o caminho e informar se a chama é sincrona ou assíncrona)
+    httpResq.send(null); // devolve para API alguma informação, neste caso a API não faz nenhum tipo de requisição
+
+    var resposta = JSON.parse(httpResq.responseText);// converte os dados da API em JSON
+    console.log(resposta); // exibindo o return no console
+    return resposta;// retornando resultado da busca
 
 
-<script>
-        function carregarClientes()
-     {
-         var httpReq = new XMLHttpRequest();
-         var url = "https://demo8722911.mockable.io/cliente";
-         httpReq.open("GET", url, false);
-         httpReq.send(null);
-
-        var resposta = JSON.parse(httpReq.responseText); //conversão do arquivo para XML>
-        console.log(resposta);
-         return resposta;
-     };
-
-     function carregarTabelaCliente(){
-        var clientes = carregarClientes();
-        //jquery - foreach 
-        $("#cliente").html("");
-        $.each(clientes, function (index, item) {
-            var linha = "<tr>";
-            linha += "<td>" + item.nome + "</td>";
-            linha += "<td>" + item.idade + "</td>";
-            linha += "<td>" + item.rg + "</td>";
-            linha += "<td>" + item.endereco + "</td>";
-            linha += "</tr>";
-
-            $("#cliente").append(linha);  
-        });
     }
 
+    function carregaTabela(){
+      var clientes = getJson();// recebe os dados da função de conexão com a API
+      $.each(clientes, function(index,item){ // foreach para exibir todos os dados copiados
+        var linha = "<tr>";// variavel que repesenta a linha da coluna
+        linha += "<td>" + item.id +"</td>"; // criando intem que será exibido na primeira coluna  
+        linha += "<td>" + item.nome +"</td>";// criando intem que será exibido na segunda coluna  
+        linha += "<td>" + item.idade +"</td>";// criando intem que será exibido na terceira coluna  
+        linha += "<td>" + item.rg +"</td>";// criando intem que será exibido na quarta coluna
+        linha += "</tr>"
+      
+      
+          $("#cliente").append(linha);// função para inserir uma função em baixo da outra.
+      });
+    }
+ 
 </script>
+
+
+ 
+      <style>
+
+        body{
+          background-color: #f9f9f9;
+        }
+
+        #tabela{
+          margin-top: 2px;
+          margin-bottom: 2px;
+          background-color: white;
+          text-align: center;
+        }
+
+        #tabelaGrup{
+         
+          margin-top: 3%;
+         
+        }
+
+        nav{
+          color:#FFFFFF;
+        }
+        #nome{
+          text-align: left;
+        }
+
+        #titulo{
+          width: 100%;
+          height:2%;
+          background-color: white;
+          border: 1px solid lightgray;
+        }
+
+        h6{
+          margin-top: 1%;
+          margin-left: 1%;
+        }
+        p{
+          margin-left: 1%;
+          font-size: 9pt;
+        }
+        #btn{
+       
+          margin-left: 1%;
+          margin-bottom: 1%;
+        }
+      </style>
+</body>
 </html>
