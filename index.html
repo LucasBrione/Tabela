@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body onload="carregarTabelaCliente()">
+   
+
+    <table  class="table">
+        <thead >
+          <tr>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Documento</th>
+            <th>Endereço</th>
+          </tr>
+        </thead>
+        <tbody id="cliente">
+                
+        </tbody>
+      </table>
+</body>
+
+
+<script>
+        function carregarClientes()
+     {
+         var httpReq = new XMLHttpRequest();
+         var url = "https://demo8722911.mockable.io/cliente";
+         httpReq.open("GET", url, false);
+         httpReq.send(null);
+
+        var resposta = JSON.parse(httpReq.responseText); //conversão do arquivo para XML>
+        console.log(resposta);
+         return resposta;
+     };
+
+     function carregarTabelaCliente(){
+        var clientes = carregarClientes();
+        //jquery - foreach 
+        $("#cliente").html("");
+        $.each(clientes, function (index, item) {
+            var linha = "<tr>";
+            linha += "<td>" + item.nome + "</td>";
+            linha += "<td>" + item.idade + "</td>";
+            linha += "<td>" + item.rg + "</td>";
+            linha += "<td>" + item.endereco + "</td>";
+            linha += "</tr>";
+
+            $("#cliente").append(linha);  
+        });
+    }
+
+</script>
+</html>
